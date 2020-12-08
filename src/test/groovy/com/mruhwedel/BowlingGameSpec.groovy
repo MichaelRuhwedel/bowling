@@ -7,48 +7,49 @@ class BowlingGameSpec extends Specification {
 
     def game = new BowlingGame()
 
-    def 'INIT: the game keeps the score and starts at 0'() {
+    def 'INIT: The game keeps the score and starts at 0'() {
         expect:
         game.score == 0
     }
 
-    def 'Frame 1: the sum of two rolls is recorded'() {
+    def 'Regular Frame: The sum of two rolls is recorded'() {
         when:
         game.roll(1)
+        game.roll(2)
+
+        then:
+        game.score == (1 + 2)
+    }
+
+    def 'Two frames: the score of the next frame is added'() {
+        when:
+        game.roll(1)
+        game.roll(2)
+
+        and: 'second regular frame'
+        game.roll(3)
         game.roll(4)
 
         then:
-        game.score == (1 + 4)
-    }
-
-    def '2nd Frame: the score of the next frame is added'() {
-        when:
-        game.roll(1)
-        game.roll(4)
-
-        game.roll(4)
-        game.roll(5)
-
-        then:
-        game.score == ((1 + 4) + (4 + 5)) // all counted regularly
+        game.score == ((1 + 2) + (3 + 4)) // all counted regularly
 
     }
 
 
-    def 'a split is counted with the following roll as a bonus'() {
+    def 'Spare Frame: Count the following roll as a bonus'() {
         when:
         game.roll(1)
         game.roll(9) // spare: 10 + bonus 5
 
         and:
-        game.roll(5) // bonus for the spare
-        game.roll(6)
+        game.roll(2) // bonus for the spare
+        game.roll(3)
 
         then:
-        game.score == ((1 + 9) + 5) + (5 + 6) // spare + bonus + second frame
+        game.score == (10 + 2) + (2 + 3) // spare + bonus + second frame
     }
 
-    def 'a strike is counted with the following two rolls as a bonus'() {
+    def 'Strike Frame: Count the following two rolls as a bonus'() {
         when:
         game.roll(10) // Strike: 10 + bonus 1 + bonus 2
 
@@ -60,8 +61,40 @@ class BowlingGameSpec extends Specification {
         game.score == (10 + (1 + 2) + (1 + 2))
     }
 
-    def 'full game from doc'() {
+    def 'Game From the Doc'() {
         when:
+        fullGameFromTask.forEach(game::roll)
+
+        then:
+        game.score == 133
+    }
+
+    def 'Strike in last frame: The bonus to close the frame are counted'() {
+        when:
+        (
+                [1, 0] * 9 +  // 9 regular frames
+                        [10] + // Strike in 10. frame
+                        [1, 1] // two bonus rolls
+        ).forEach(game::roll)
+
+        then:
+        game.score == 9 + 10 + 2 // 9 regular frames + strike + strike bonus rolls
+    }
+
+    def 'Spare in last frame: One bonus roll is counted '() {
+        when:
+        (
+                [1, 0] * 9 +  // 9 regular frames
+                        [1,9] + // spare in 11. frame
+                        [1, 2] // .... and player sneaked in one bonus rolls
+        ).forEach(game::roll)
+
+        then:
+        game.score == 9 + 10 + 1 // 9 regular frames + spare + one spare bonus roll
+    }
+
+
+    private static ArrayList<Integer> getFullGameFromTask() {
         [
                 1, 4,
                 4, 5,
@@ -74,9 +107,6 @@ class BowlingGameSpec extends Specification {
                 10,    // strike
                 2, 8,  // spare
                 6      // extra roll last frame
-        ].forEach {game.roll(it); }
-
-        then:
-        game.score == 133
+        ]
     }
 }
