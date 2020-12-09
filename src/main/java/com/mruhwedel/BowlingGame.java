@@ -16,6 +16,9 @@ public class BowlingGame {
         }
     }
 
+    /**
+     * Returns the final score. Prints all scores to standard out
+     */
     public int getScore() {
         int score = 0;
         String state;
@@ -48,6 +51,7 @@ public class BowlingGame {
 
             System.out.printf("Frame %d: %d %s%n", frame, score, state);
         }
+        System.out.printf("Final Score: %d", score);
         return score;
     }
 

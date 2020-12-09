@@ -12,8 +12,6 @@ public class Application {
                 .mapToInt(Integer::parseInt)
                 .forEach(bowlingGame::roll);
 
-        int score = bowlingGame.getScore();
-
-        System.out.println("Final score: " + score);
+         bowlingGame.getScore(); // will print so standard out
     }
 }
