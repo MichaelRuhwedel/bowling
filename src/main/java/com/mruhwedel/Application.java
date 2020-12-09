@@ -12,6 +12,6 @@ public class Application {
                 .mapToInt(Integer::parseInt)
                 .forEach(bowlingGame::roll);
 
-         bowlingGame.getScore(); // will print so standard out
+         bowlingGame.getScore(); // will print to standard out
     }
 }
