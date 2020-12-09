@@ -1,6 +1,6 @@
 plugins {
     id("groovy")
-    id("io.micronaut.application") version "1.2.0"
+    id('application')
 }
 
 version = "0.1"
@@ -8,28 +8,23 @@ group = "com.mruhwedel"
 
 repositories {
     mavenCentral()
-    jcenter()
-}
-
-micronaut {
-    testRuntime("spock2")
-    processing {
-        incremental(true)
-        annotations("com.mruhwedel.*")
-    }
 }
 
 dependencies {
-    implementation("io.micronaut:micronaut-runtime")
-    runtimeOnly("ch.qos.logback:logback-classic")
+    testImplementation 'org.spockframework:spock-core:2.0-M4-groovy-3.0'
 }
-
 
 application {
     mainClass.set("com.mruhwedel.Application")
 }
 
+test{
+    useJUnitPlatform()
+}
+
+def javaVersion = JavaVersion.toVersion("11")
+
 java {
-    sourceCompatibility = JavaVersion.toVersion("11")
-    targetCompatibility = JavaVersion.toVersion("11")
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
 }
