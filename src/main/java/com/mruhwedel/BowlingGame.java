@@ -35,7 +35,7 @@ public class BowlingGame {
                 state = "";
             }
 
-            System.out.println("Frame " + frame + ": " + score + " " + state);
+            System.out.printf("Frame %d: %d %s%n", frame, score, state);
         }
         return score;
     }
