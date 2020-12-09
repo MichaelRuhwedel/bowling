@@ -135,7 +135,7 @@ class BowlingGameSpec extends Specification {
                 5, 5,  // spare
                 10,    // strike
                 0, 1,
-                7, 3,  // strike
+                7, 3,  // spare
                 6, 4,  // spare
                 10,    // strike
                 2, 8,  // spare
