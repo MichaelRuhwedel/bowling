@@ -27,7 +27,7 @@ public class BowlingGame {
                 rollIndex += 2; // we've counted 2 rolls (Spare) so we may advance
             } else if (isStrike(rollIndex)) {
                 state = " X Strike ";
-                score += 10
+                score += ALL_PINS_SCORE
                         + rolls[rollIndex + 1] // bonus: first roll from next frame
                         + rolls[rollIndex + 2];//        + second roll from next frame
 
