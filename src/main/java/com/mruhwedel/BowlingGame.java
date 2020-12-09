@@ -21,17 +21,17 @@ public class BowlingGame {
         String state;
         int rollIndex = 0;
         for (int frame = 1; frame <= MAX_FRAMES; frame++) {
-            if (isSpare(rollIndex)) {
-                score += ALL_PINS_SCORE + rolls[rollIndex + 2]; // bonus: first roll from next frame
-                state = " / Spare ";
-                rollIndex += 2; // we've counted 2 rolls (Spare) so we may advance
-            } else if (isStrike(rollIndex)) {
-                state = " X Strike ";
+            if (isStrike(rolls[rollIndex])) {
+                state = "X Strike ";
                 score += ALL_PINS_SCORE
                         + rolls[rollIndex + 1] // bonus: first roll from next frame
                         + rolls[rollIndex + 2];//        + second roll from next frame
 
                 rollIndex++; // we've counted 1 roll (Strike)
+            } else if (isSpare(rolls[rollIndex], rolls[rollIndex + 1])) {
+                score += ALL_PINS_SCORE + rolls[rollIndex + 2]; // bonus: first roll from next frame
+                state = "/ Spare ";
+                rollIndex += 2; // we've counted 2 rolls (Spare) so we may advance
             } else {
                 score += rolls[rollIndex] + rolls[rollIndex + 1];
                 rollIndex += 2; // we've counted 2 rolls (Regular)
@@ -43,13 +43,15 @@ public class BowlingGame {
         return score;
     }
 
-    private boolean isStrike(int rollOffset) {
-        return rolls[rollOffset] == ALL_PINS_SCORE;
+    private boolean isStrike(int roll) {
+        return isAllPinsDown(roll);
     }
 
-    private boolean isSpare(int rollIndex) {
-        int first = rolls[rollIndex];
-        int second = rolls[rollIndex + 1];
-        return first != ALL_PINS_SCORE && first + second == ALL_PINS_SCORE;
+    private boolean isAllPinsDown(int roll) {
+        return roll == ALL_PINS_SCORE;
+    }
+
+    private boolean isSpare(int roll, int followingRoll) {
+        return isAllPinsDown(roll + followingRoll);
     }
 }
