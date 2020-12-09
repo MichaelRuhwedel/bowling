@@ -4,18 +4,20 @@ public class BowlingGame {
     public static final int MAX_FRAMES = 10;
     public static final int ALL_PINS_SCORE = 10;
     // 10 * 2 for regular rolls plus one bonus in case a strike/split is hit in Frame 10
-    private final int[] rolls = new int[22];
+    private final int[] rolls = new int[21];
     private int currentRoll = 0;
 
     public void roll(int count) {
-        rolls[currentRoll++] = count;
+        if (currentRoll < rolls.length) {
+            rolls[currentRoll++] = count;
+        }
     }
 
     public int getScore() {
         int score = 0;
         String state = "";
         int rollIndex = 0;
-        for (int frame = 0; frame < MAX_FRAMES; frame++) {
+        for (int frame = 1; frame <= MAX_FRAMES; frame++) {
             if (isSpare(rollIndex)) {
                 score += ALL_PINS_SCORE + rolls[rollIndex + 2]; // bonus: first roll from next frame
                 state = " / Spare ";
@@ -30,9 +32,10 @@ public class BowlingGame {
             } else {
                 score += rolls[rollIndex] + rolls[rollIndex + 1];
                 rollIndex += 2; // we've counted 2 rolls (Regular)
+                state = "";
             }
 
-            System.out.println("Frame " + (frame + 1) + ": " + score + " " + state);
+            System.out.println("Frame " + frame + ": " + score + " " + state);
         }
         return score;
     }

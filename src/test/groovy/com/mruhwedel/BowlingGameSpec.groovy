@@ -69,32 +69,50 @@ class BowlingGameSpec extends Specification {
         game.score == 133
     }
 
-    def 'Strike in last frame: The bonus to close the frame are counted'() {
+    def 'Strike in last frame: TWO bonus rolls to close the frame are counted'() {
+        given:
+        def regularFrame = [1, 0]
+        def strike = [10]
+        def bonusRolls = [1, 1]
+
         when:
         (
-                [1, 0] * 9 +  // 9 regular frames
-                        [10] + // Strike in 10. frame
-                        [1, 1] // two bonus rolls
+                regularFrame * 9 +  // 9 regular frames
+                        strike + // Strike in 10. frame
+                        bonusRolls // two bonus rolls
         ).forEach(game::roll)
 
         then:
-        game.score == 9 + 10 + 2 // 9 regular frames + strike + strike bonus rolls
+        game.score == 9 * sum(regularFrame) +
+                sum(strike) +
+                sum(bonusRolls) // 9 regular frames + strike + strike bonus rolls
     }
 
-    def 'Spare in last frame: One bonus roll is counted '() {
+    private static int sum(List<Integer> regularFrame) {
+        regularFrame.sum() as int
+    }
+
+    def 'Spare in last frame: ONE bonus to close the frame  is counted '() {
+        given:
+        def regularFrame = [1, 0]
+        def spare = [1, 9]
+        def bonusRolls = [1, 2]
+
         when:
         (
-                [1, 0] * 9 +  // 9 regular frames
-                        [1,9] + // spare in 11. frame
-                        [1, 2] // .... and player sneaked in one bonus rolls
+                regularFrame * 9 +  // 9 regular frames
+                        spare + // spare in 11. frame
+                        bonusRolls // .... and player sneaked in one bonus rolls, of one legit
         ).forEach(game::roll)
 
         then:
-        game.score == 9 + 10 + 1 // 9 regular frames + spare + one spare bonus roll
+        game.score == 9 * sum(regularFrame) +
+                sum(spare) +
+                bonusRolls[0] // 9 regular frames + spare + one spare bonus roll
     }
 
 
-    private static ArrayList<Integer> getFullGameFromTask() {
+    private static List<Integer> getFullGameFromTask() {
         [
                 1, 4,
                 4, 5,
