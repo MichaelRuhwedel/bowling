@@ -1,8 +1,8 @@
 package com.mruhwedel;
 
 public class BowlingGame {
-    public static final int MAX_FRAMES = 10;
-    public static final int ALL_PINS_SCORE = 10;
+    private static final int MAX_FRAMES = 10;
+    private static final int ALL_PINS_SCORE = 10;
     // 10 * 2 for regular rolls plus one bonus in case a strike/split is hit in Frame 10
     private final int[] rolls = new int[21];
     private int currentRoll = 0;
