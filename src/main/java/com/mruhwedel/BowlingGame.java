@@ -20,22 +20,30 @@ public class BowlingGame {
         int score = 0;
         String state;
         int rollIndex = 0;
+
         for (int frame = 1; frame <= MAX_FRAMES; frame++) {
             if (isStrike(rolls[rollIndex])) {
                 state = "X Strike ";
+
                 score += ALL_PINS_SCORE
                         + rolls[rollIndex + 1] // bonus: first roll from next frame
                         + rolls[rollIndex + 2];//        + second roll from next frame
 
                 rollIndex++; // we've counted 1 roll (Strike)
             } else if (isSpare(rolls[rollIndex], rolls[rollIndex + 1])) {
-                score += ALL_PINS_SCORE + rolls[rollIndex + 2]; // bonus: first roll from next frame
                 state = "/ Spare ";
+
+                score += ALL_PINS_SCORE
+                        + rolls[rollIndex + 2]; // bonus: first roll from next frame
+
                 rollIndex += 2; // we've counted 2 rolls (Spare) so we may advance
             } else {
-                score += rolls[rollIndex] + rolls[rollIndex + 1];
-                rollIndex += 2; // we've counted 2 rolls (Regular)
                 state = "";
+
+                score += rolls[rollIndex]
+                        + rolls[rollIndex + 1];
+
+                rollIndex += 2; // we've counted 2 rolls (Regular)
             }
 
             System.out.printf("Frame %d: %d %s%n", frame, score, state);
