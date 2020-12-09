@@ -9,7 +9,7 @@ public class BowlingGame {
 
     public void roll(int count) {
         boolean isStillInGame = currentRoll < rolls.length;
-        boolean isValidScore = 0 < count && count < MAX_FRAMES;
+        boolean isValidScore = 0 <= count && count <= ALL_PINS_SCORE;
 
         if (isStillInGame && isValidScore) {
             rolls[currentRoll++] = count;
