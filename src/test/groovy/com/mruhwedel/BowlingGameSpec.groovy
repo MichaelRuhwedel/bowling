@@ -12,6 +12,21 @@ class BowlingGameSpec extends Specification {
         game.score == 0
     }
 
+    def 'Invalid: Disregard rolls that are out of range (#roll)'() {
+        when:
+        game.roll(1)
+        game.roll(2)
+
+        game.roll(roll)
+        game.roll(roll)
+
+        then:
+        game.score == 3 // the valid one
+
+        where:
+        roll << [-1, 11, 100, 1000]
+    }
+
     def 'Regular Frame: The sum of two rolls is recorded'() {
         when:
         game.roll(1)

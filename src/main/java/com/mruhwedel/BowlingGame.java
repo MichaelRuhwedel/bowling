@@ -8,14 +8,17 @@ public class BowlingGame {
     private int currentRoll = 0;
 
     public void roll(int count) {
-        if (currentRoll < rolls.length) {
+        boolean isStillInGame = currentRoll < rolls.length;
+        boolean isValidScore = 0 < count && count < MAX_FRAMES;
+
+        if (isStillInGame && isValidScore) {
             rolls[currentRoll++] = count;
         }
     }
 
     public int getScore() {
         int score = 0;
-        String state = "";
+        String state;
         int rollIndex = 0;
         for (int frame = 1; frame <= MAX_FRAMES; frame++) {
             if (isSpare(rollIndex)) {
