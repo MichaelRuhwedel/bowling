@@ -1,4 +1,4 @@
-### Bowling game exercise
+## Bowling Game Exercise
 ### Run the application
 
 #### With gradle
